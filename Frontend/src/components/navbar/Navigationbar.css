@@ -1,0 +1,35 @@
+:root{
+    --primaryColor: #0096FF;
+    --secondaryColor: #47B5FF;
+    --white: #fff;
+    --black: #000;
+}
+
+.AppBar{
+    background-color: var(--primaryColor);
+}
+.Link{
+    text-decoration: none;
+}
+.Login{
+    color: var(--primaryColor);
+    background-color: var(--white);
+}
+.Login:hover{
+    background-color: var(--secondaryColor);
+    color: var(--white);
+}
+
+.Register{
+    color: var(--white);
+    border-color: var(--white);
+}
+.Register:hover{
+    color: var(--white);
+    background-color: var(--secondaryColor);
+    border-color: var(--secondaryColor);
+}
+.NavMenus:hover{
+    color: var(--white);
+    background-color: var(--secondaryColor);
+}
