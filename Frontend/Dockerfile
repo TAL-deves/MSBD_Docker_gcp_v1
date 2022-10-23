@@ -71,8 +71,8 @@ FROM nginx
 
 # WORKDIR /usr/share/nginx/html
 COPY default.conf /etc/nginx/conf.d/default.conf
-# COPY fullchain.pem /etc/nginx/conf.d/fullchain.pem
-# COPY privkey.pem /etc/nginx/conf.d/privkey.pem
+COPY fullchain.pem /etc/nginx/conf.d/fullchain.pem
+COPY privkey.pem /etc/nginx/conf.d/privkey.pem
 
 # Copies static resources from builder stage  --from=builder
 COPY --from=builder ./Frontend/build /var/www/html
