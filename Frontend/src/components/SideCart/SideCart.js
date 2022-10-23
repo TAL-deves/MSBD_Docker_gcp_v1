@@ -91,7 +91,7 @@ const SideCart = (props) => {
   const handleClose = () => setOpen(false);
 
 
-
+  let user=localStorage.getItem("user")
   AOS.init({duration:500});
   let mail= userobj.user
   const [flag, setFlag] = useState(true);
@@ -147,6 +147,7 @@ const SideCart = (props) => {
       }
 
   ).then((res)=>{
+    
     if (res.data.result.status === 401) {
       localStorage.removeItem("access_token");
       localStorage.removeItem("refresh_token");
@@ -156,6 +157,7 @@ const SideCart = (props) => {
      }, 1000);
 
     }
+     
   }); }
 
 
@@ -184,7 +186,7 @@ const SideCart = (props) => {
    
   return (
     <>
-      <Box>
+      <Box   sx={{overflow:"hidden"}}>
       <Typography sx={{margin:"5rem"}} variant="h5">Selected courses list:</Typography>
           {courses[0]=== undefined ?
            <>{courses.map((course) => {
@@ -253,25 +255,30 @@ const SideCart = (props) => {
           
         }
           <Typography>Total:৳{total}</Typography>
-         {mail? 
-          (<><Button
+         {user? 
+          (<>
+          
+          <Button
              onClick={response}
              disabled={(courseList.length===0)?true:false}
-              variant="contained">Proceed to Payment</Button>
-              <Button 
+           
+              variant="contained">Proceed to Payment
+          </Button>
+          <Button 
             disabled={(courseList.length===0)?true:false}
-            variant="contained" sx={{marginLeft:"1rem"}}
-            onClick={handleOpen}>
-          Gift</Button>
+            variant="contained" sx={{marginLeft:"1rem", marginTop:{ xs:"1rem", md:"0rem", lg:"0rem",xl:"0rem"}, overflow:"hidden"}}
+            onClick={handleOpen}>Gift
+          </Button>
+          
 
-          <Modal
+    <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
+          <Typography id="modal-modal-title" variant="h6" color="text.secondary" component="h2">
             Please enter the email of the person you want to gift this course below
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
@@ -307,7 +314,7 @@ const SideCart = (props) => {
           </Typography>
           <Button 
             onClick={responseForGift} 
-            // disabled={(courseList.length===0)?true:false}
+            disabled={!validEmail}
             variant="contained">Proceed to Payment</Button>
         </Box>
         

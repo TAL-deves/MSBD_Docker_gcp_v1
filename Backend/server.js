@@ -63,12 +63,21 @@ const { sendSms } = require("./services/smsService");
 const reviews = require("./Database/models/reviews");
 const multer = require('multer')
 
+const fs = require("fs");
+const Jimp = require("jimp");
+const path = require('path');
+
+
 // const customCss = fs.readFileSync((process.cwd()+"/swagger.css"), 'utf8');
 // let express to use this
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.json());
+
+app.use(bodyParser.json({limit: "50mb"}));
+app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
+
 
 mongoose.connect(process.env.DATABASE_CONNECT, function (err, res) {
   if (err) {
@@ -81,10 +90,10 @@ mongoose.connect(process.env.DATABASE_CONNECT, function (err, res) {
 app.use(express.json());
 app.use(
   cors({
-    // origin: '*',
-    // // origin: true,
-    // methods: "GET,POST,PUT,DELETE",
-    // credentials: true,
+    origin: '*',
+    // origin: true,
+    methods: "GET,POST,PUT,DELETE",
+    credentials: true,
   })
 );
 app.use(
@@ -425,7 +434,7 @@ app.get(
         authorization: "Basic YXBwbGljYXRpb246c2VjcmV0",
         "content-length": "81",
         "accept-encoding": "gzip, deflate, br",
-        host: process.env.SERVER_URL_DEVELOPMENT,
+        host: process.env.SERVER_URL,
         connection: "close",
       },
       method: "POST",
@@ -446,7 +455,7 @@ app.get(
     // res.send(responseToSend);
 
     res.redirect(
-      process.env.CLIENT_URL_DEVELOPMENT +
+      process.env.CLIENT_URL +
         `login?gusername=${userid}&gobject=${JSON.stringify(
           responseToSend
         )}&profilename=${userinfo}`
@@ -480,7 +489,7 @@ app.get(
         authorization: "Basic YXBwbGljYXRpb246c2VjcmV0",
         "content-length": "81",
         "accept-encoding": "gzip, deflate, br",
-        host: process.env.SERVER_URL_DEVELOPMENT,
+        host: process.env.SERVER_URL,
         connection: "close",
       },
       method: "POST",
@@ -510,7 +519,7 @@ app.get(
     // res.send(responseToSend);
 
     res.redirect(
-      process.env.CLIENT_URL_DEVELOPMENT +
+      process.env.CLIENT_URL +
         `login?fusername=${userid}&fobject=${JSON.stringify(
           responseToSend
         )}&fprofilename=${profilename}`
@@ -639,23 +648,19 @@ app.post("/api/signup", async (req, res, next) => {
       otp: otpGenerated,
     });
 
-    // sendMail({
-    //   to: signUpUser.email,
-    //   OTP: otpGenerated,
-    // });
+    sendMail({
+      to: signUpUser.email,
+      OTP: otpGenerated,
+    });
 
-    // sendSms({
-    //   reciever: signUpUser.email,
-    //   OTP: otpGenerated,
-    // });
-    console.log(req.body);
+    // console.log(req.body);
     let smssent = JSON.parse(await sendSms({
       reciever: req.body.phoneNumber,
       OTP: otpGenerated
     }))
-    if(smssent.status_code === 200){
+    // if(smssent.status_code === 200){
       signUpUser.save();
-      if (signUpUser) {
+    //   if (signUpUser) {
         let setSendResponseData = new sendResponseData(
           "User registered!",
           202,
@@ -683,18 +688,20 @@ app.post("/api/signup", async (req, res, next) => {
         // });
         // })
         // .catch((error) => {
-      } else {
-        let setSendResponseData = new sendResponseData(null, 500, "Server error");
-        let responseToSend = encryptionOfData(setSendResponseData.error());
-  
-        res.send(responseToSend);
-      }
-    } else {
-      let setSendResponseData = new sendResponseData(null, smssent.status_code, "OTP service down! Please try again later.");
-      let responseToSend = encryptionOfData(setSendResponseData.error());
 
-      res.send(responseToSend);
-    }
+      // } else {
+      //   let setSendResponseData = new sendResponseData(null, 500, "Server error");
+      //   let responseToSend = encryptionOfData(setSendResponseData.error());
+  
+      //   res.send(responseToSend);
+      // }
+      
+    // } else {
+    //   let setSendResponseData = new sendResponseData(null, smssent.status_code, "OTP service down! Please try again later.");
+    //   let responseToSend = encryptionOfData(setSendResponseData.error());
+
+    //   res.send(responseToSend);
+    // }
   }
 });
 
@@ -768,15 +775,15 @@ app.post("/api/resend-otp", async (req, res) => {
         }
       ); // Updating user profile DB with new OTP and changing lock status to false
 
-      // sendMail({
-      //   to: user.email,
-      //   OTP: otpGenerated,
-      // }); // Sending OTP to email address
-
-      sendSms({
-        reciever: user.email,
+      sendMail({
+        to: user.email,
         OTP: otpGenerated,
-      });
+      }); // Sending OTP to email address
+
+      // sendSms({
+      //   reciever: user.email,
+      //   OTP: otpGenerated,
+      // });
 
       if (signUpUser) {
         let setSendResponseData = new sendResponseData(
@@ -1078,11 +1085,20 @@ app.post("/api/userprofile", async (req, res) => {
   let recievedResponseData = decryptionOfData(req, res);
   req.body = JSON.parse(JSON.parse(recievedResponseData));
 
+  // console.log("api/userprofile",req.body);
+
 
   try {
     let userProfileData = await signUpTemplateCopy.findOne({
       username:req.body.username
     })
+
+    
+    // fs.readFile(`/userProfilepictures/${req.body.username}.webp`, function(err, data) {
+    //   console.log(`${req.body.username}.webp`, data)
+    // });
+
+    // console.log("api/userprofile  --");
 
     if(userProfileData){
 
@@ -1118,24 +1134,43 @@ app.post("/api/userprofile", async (req, res) => {
 
 var upload = multer({ dest: "userProfilepictures/" })
 
-app.post("/api/uploadimage",upload.single('image'), async (req, res) => {
-  if(!req.file){
-    res.send("failed to upload");
-  } else {
+app.post("/api/uploadimage",async (req, res) => {
+  let recievedResponseData = decryptionOfData(req, res);
+  req.body = JSON.parse(JSON.parse(recievedResponseData));
+  // console.log("req.body : ---- ", req.body);
+
+ 
     let userProfileUpdate = await signUpTemplateCopy.findOneAndUpdate({
       username:req.body.username
     },
     {$set:{
-      profilephoto: req.file.path
+      // profilephoto: req.file.path
+      profilephoto: req.body.webimage
     }})
-    console.log(userProfileUpdate);
+
+    let base64String = req.body.webimage;
+  let base64Image = base64String.split(';base64,').pop();
+
+  // const buffer = Buffer.from(base64Image, "base64");
+  // Jimp.read(buffer, (err, res) => {
+  //   if (err) throw new Error(err);
+  //   res.quality(5).write("userProfilepictures/resized.jpg");
+  // });
+  fs.writeFile(`userProfilepictures/${req.body.username}.webp`, base64Image, {encoding: 'base64'}, function(err) {
+    console.log('File created');
+  });
+
+
+
+  // console.log(userProfileUpdate);
     res.send("uploaded");
-  }
+
 })
 app.post("/api/updateuserprofile", async (req, res) => {
   let recievedResponseData = decryptionOfData(req, res);
   req.body = JSON.parse(JSON.parse(recievedResponseData));
 
+  console.log("User data updates",req.body);
 
   try {
     let userProfileData = await signUpTemplateCopy.findOneAndUpdate({
@@ -1299,15 +1334,15 @@ app.post("/api/forget-password", async (req, res) => {
         }
       ); // Updating user profile DB with new OTP and changing lock status to false
 
-      // sendMail({
-      //   to: user.email,
-      //   OTP: otpGenerated,
-      // }); // Sending OTP to email address
-
-      sendSms({
-        reciever: user.email,
+      sendMail({
+        to: user.email,
         OTP: otpGenerated,
-      });
+      }); // Sending OTP to email address
+
+      // sendSms({
+      //   reciever: user.email,
+      //   OTP: otpGenerated,
+      // });
 
       if (signUpUser) {
         let setSendResponseData = new sendResponseData("OTP sent!", 202, null);
@@ -2144,11 +2179,8 @@ app.post("/api/user-reviews", async (req, res) => {
 
 //! Testing point
 
-app.get("/api/atesting", async (req, res) => {
-res.send("I'm on!")
-});
 app.post("/api/keepalive", async (req, res) => {
-res.send("I'm on!")
+
 });
 app.post("/api/atestingpoint", async (req, res) => {
 

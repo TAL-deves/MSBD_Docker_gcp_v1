@@ -654,6 +654,7 @@ const Navigationbar = (props) => {
             // defaultUnchecked
             onClick={() => {
               props.themestatus(!props.currentstatus);
+              // localStorage.setItem("theme",props.themestatus)
             }}
           />
         </Toolbar>

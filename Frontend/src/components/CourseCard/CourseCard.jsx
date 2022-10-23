@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import { Box } from "@mui/system";
 
 
 const CourseCard = (props) => {
@@ -69,8 +70,9 @@ const CourseCard = (props) => {
 
   return (
     <motion.div whileHover={{scale:1.03}}>
+      <Box data-aos="zoom-in">
     <Card sx={{ margin: "0 5px" ,
-    "&:hover":{boxShadow:"5"}}} data-aos="zoom-in"  >
+    "&:hover":{boxShadow:"5"}}}   >
       <CardMedia
         component="img"
         height="140"
@@ -131,7 +133,8 @@ const CourseCard = (props) => {
              onClick={()=>handleAdd(props)
               
              }
-            color={flag ? "primary" : "success"}
+            color="primary"
+            // color={flag ? "primary" : "success"}
             //  disabled={found}
             >
               <Typography
@@ -139,8 +142,8 @@ const CourseCard = (props) => {
                   fontSize: "1rem",
                 }}
               >
-                {/* {t("buy")} */}
-               {flag?<>{t("buy")}</>:<>{t("selected")}</>} 
+                {t("buy")}
+               {/* {flag?<>{t("buy")}</>:<>{t("selected")}</>}  */}
                {/* {fullObjectToggle==="y"?<>{t("buy")}</>:<>{t("selected")}</>}  */}
               </Typography>
             </Button>
@@ -166,6 +169,7 @@ const CourseCard = (props) => {
         </Grid>
       </CardActions>
     </Card>
+    </Box>
     </motion.div>
   );
 };

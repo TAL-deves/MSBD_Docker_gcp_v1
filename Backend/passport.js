@@ -25,9 +25,9 @@ try {
 passport.use(
 	new GoogleStrategy(
 		{
-			clientID: process.env.CLIENT_ID_DEVELOPMENT,
-			clientSecret: process.env.CLIENT_SECRET_DEVELOPMENT,
-			callbackURL: process.env.GOOGLE_CALLBACK_URL_DEVELOPMENT,
+			clientID: process.env.CLIENT_ID,
+			clientSecret: process.env.CLIENT_SECRET,
+			callbackURL: process.env.GOOGLE_CALLBACK_URL,
 			scope: ["profile", "email"],
 		},
 		function (accessToken, refreshToken, profile, callback) {
@@ -57,9 +57,9 @@ passport.use(
 );
 
 passport.use(new FacebookStrategy({
-	clientID: process.env.APP_ID_DEVELOPMENT,
-	clientSecret: process.env.APP_SECRET_DEVELOPMENT,
-	callbackURL: process.env.FACEBOOK_CALLBACK_URL_DEVELOPMENT
+	clientID: process.env.APP_ID,
+	clientSecret: process.env.APP_SECRET,
+	callbackURL: process.env.FACEBOOK_CALLBACK_URL
   },
   function(accessToken, refreshToken, profile, callback) {
 	// return done(null, profile);

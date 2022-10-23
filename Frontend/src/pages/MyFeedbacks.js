@@ -11,7 +11,8 @@ const MyFeedbacks = () => {
   const {
     userobj
   } = useContext(multiStepContext);
-    const[username, setUser]= useState("shishir");
+    
+    const [username, setUser] = useState(localStorage.getItem('user'))
     const[reviewData, setReviewData]=useState([])
 
     let handleWatchReview=async()=>{

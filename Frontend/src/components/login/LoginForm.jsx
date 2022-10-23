@@ -407,7 +407,10 @@ const LoginForm = (props) => {
               }}
               autoFocus
               onChange={(e) => {setUsername(e.target.value);
-                props.setMail=username;}}
+                props.setMail=username;
+                
+              }
+                }
               
             />
             <TextField

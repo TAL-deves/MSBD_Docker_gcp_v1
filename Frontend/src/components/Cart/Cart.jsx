@@ -32,7 +32,7 @@ import IconButton from "@mui/material/IconButton";
 import InputBase from "@mui/material/InputBase";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
-import { Container, CssBaseline } from "@mui/material";
+import { Container, CssBaseline, Modal, TextField } from "@mui/material";
 import { CardActionArea } from "@mui/material";
 import ReactPlayer from "react-player";
 import { useDispatch, useSelector } from "react-redux";
@@ -45,12 +45,62 @@ import { multiStepContext } from "../../pages/StepContext";
 
 const PAYMENT_URL = "/api/buy";
 
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+
 const Cart = (props) => {
   const {
-    userobj
+    userRef,
+    emailRef,
+    errRef,
+    validName,
+    setValidName,
+    userobj,
+    userFocus,
+    setUserFocus,
+    validEmail,
+    setValidEmail,
+    email,
+    setEmail,
+    emailFocus,
+    setEmailFocus,
+    password,
+    setPwd,
+    validPwd,
+    setValidPwd,
+    pwdFocus,
+    setPwdFocus,
+    validMatch,
+    setValidMatch,
+    matchFocus,
+    setMatchFocus,
+    errMsg,
+    setErrMsg,
+    success,
+    setSuccess,
+    handleSubmit,
+    theme,
+    username,
+    setUser,
+    matchPwd,
+    setMatchPwd,phone, setPhone,validPhone, phoneFocus,setPhoneFocus
   } = useContext(multiStepContext);
-  let user= userobj.user
+  let mail= userobj.user
   const {t}= useContext(globalContext)
+  let user=localStorage.getItem("user")
+
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   
   const dispatch= useDispatch();
@@ -75,9 +125,31 @@ const Cart = (props) => {
   }
   console.log("cart er course",courses)
 
-
+  // payment api
   const response =()=>{  api.post(PAYMENT_URL,
-    JSON.stringify({  user, courseList}),
+    JSON.stringify({  mail, courseList}),
+    {
+        headers: { 'Content-Type': 'application/json' },
+        'Access-Control-Allow-Credentials': true,         
+    }
+
+).then((res)=>{
+  if (res.data.result.status === 401) {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+    swal("Session expired", "Redirecting to login page" ,'success');
+    setTimeout(function(){
+      window.location.href = '/login';
+   }, 1000);
+
+  }
+}); }
+
+
+
+  // payment api for gift 
+  const responseForGift =()=>{  api.post(PAYMENT_URL,
+    JSON.stringify({  email, courseList}),
     {
         headers: { 'Content-Type': 'application/json' },
         'Access-Control-Allow-Credentials': true,         
@@ -186,11 +258,67 @@ const Cart = (props) => {
         <Typography  variant="h5">Total: ${total}</Typography>
         {user? 
           ( 
+            <>
           <Button
              onClick={response}
              disabled={(courseList.length===0)?true:false}
-              variant="contained">Proceed to Payment</Button>
-             
+              variant="contained">Proceed to Payment
+              </Button>
+               <Button 
+               disabled={(courseList.length===0)?true:false}
+               variant="contained" sx={{marginLeft:"1rem", marginTop:{ xs:"1rem", md:"0rem", lg:"0rem",xl:"0rem"}, overflow:"hidden"}}
+               onClick={handleOpen}>Gift
+             </Button>
+             <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" color="text.secondary" variant="h6" component="h2">
+            Please enter the email of the person you want to gift this course below
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+          <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              // error={errMsg}
+              autoComplete="email"
+              // autoFocus
+              value={email}
+              InputProps={{
+                disableUnderline: true,
+              }}
+              inputProps={{
+                maxLength: 320,
+              }}
+              onChange={(e) =>
+                 setEmail(e.target.value)}
+              // aria-describedby="uidnote"
+              onFocus={() => setEmailFocus(true)}
+              // onBlur={() => setEmailFocus(false)}
+              error={emailFocus && email && !validEmail ? true : false}
+              helperText={
+                emailFocus && email && !validEmail
+                  ? "Please provide a valid email"
+                  : ""
+              }
+            />
+          </Typography>
+          <Button 
+            onClick={responseForGift} 
+            
+            // disabled={(courseList.length===0)?true:false}
+            variant="contained">Proceed to Payment</Button>
+        </Box>
+        
+      </Modal>
+             </>
          )
            :
           (

@@ -135,7 +135,7 @@ const handleMouseDownPassword2 = () => setShowPassword2(!showPassword2);
                 false
               }
               helperText={pwdFocus && !validPwd?
-                "Enter any number between 0 to 9 and at least 6 to 20 characters"
+                "Enter password between 8 to 20 characters"
                 : false
               }
             />
@@ -171,7 +171,7 @@ const handleMouseDownPassword2 = () => setShowPassword2(!showPassword2);
 
                 )
               }}
-              inputProps={{maxLength: 20}}
+              inputProps={{maxLength: 20} && {minLength:8}}
               //
             
               autoComplete="confirm-password"

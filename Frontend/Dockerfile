@@ -78,7 +78,7 @@ COPY default.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder ./Frontend/build /var/www/html
 
 EXPOSE 80
-# EXPOSE 443
+EXPOSE 443
 # EXPOSE 90
 # EXPOSE 445
 

@@ -77,8 +77,7 @@ const Courses = (props) => {
       });
   };
 
-  useEffect(() => {
-   
+  useEffect(() => {   
      fetchData();
   }, []);
 
@@ -86,10 +85,8 @@ const Courses = (props) => {
 
   
 
-
   return (
-    <Box
-    >
+    <Box>
       <Container>
         <Typography
           sx={{

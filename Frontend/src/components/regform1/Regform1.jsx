@@ -264,6 +264,9 @@ const Regform1 = () => {
             value={phone} 
             onChange={handleChange} 
             required
+            inputProps={{
+              maxLength: 16,
+            }}
             onFocus={() => setPhoneFocus(true)}
             error={
               phoneFocus && !validPhone ? 
@@ -275,7 +278,28 @@ const Regform1 = () => {
               : false
             }
             />
+            {/* <TextField 
+            sx={{width:"100%", marginY:"1rem", color:"blue"}} 
+            label="Phone Number"
+            //  country="BD"
+            // defaultValue="880"
+            value={phone}
+            onChange={handleChange} 
+            required
+            onFocus={() => setPhoneFocus(true)}
+            error={
+              phoneFocus && !validPhone ? 
+              true : 
+              false
+            }
+            helperText={phoneFocus && !validPhone?
+              "Enter valid phone number"
+              : false
+            }
+            /> */}
+
            
+            
             <TextField
               required
               fullWidth
@@ -291,7 +315,7 @@ const Regform1 = () => {
               inputProps={{
                 maxLength: 24,
               }}
-              onSubmit={(e) => setUser(e.target.value)}
+              onChange={(e) => setUser(e.target.value)}
               // aria-describedby="uidnote"
               onFocus={() => setUserFocus(true)}
               // onBlur={() => setUserFocus(false)}
@@ -307,22 +331,7 @@ const Regform1 = () => {
                 : false
                 }
             />
-            {/* <p
-              id="uidnote"
-              className={
-                userFocus && username && !validName
-                  ? "instructions"
-                  : "offscreen"
-              }
-            >
-              4 to 24 characters.
-              <br />
-              Must begin with a letter.
-              <br />
-              Letters, numbers, underscores, hyphens allowed.
-            </p> */}
-
-
+            
 
             <label htmlFor="email">
               {/* <FontAwesomeIcon icon={faCheck} className={validEmail ? "valid" : "hide"} />
@@ -358,74 +367,10 @@ const Regform1 = () => {
                   : ""
               }
             />
-            {/* <p
-              id="uidnote"
-              className={
-                emailFocus && email && !validEmail
-                  ? "instructions"
-                  : "offscreen"
-              }
-            >
-              Please provide a valid email
-              <br />
-            </p> */}
-            {/* <label htmlFor="password">
-                         
-        </label> */}
-            {/* <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="password1"
-            label="Password"
-            type="password"
-            id="password1"
-            autoComplete="current-password"
-            onChange={(e) => setPwd(e.target.value)}
-            value={password}
-            onFocus={() => setPwdFocus(true)}
-            onBlur={() => setPwdFocus(false)}
+             
            
-          /> */}
-            {/* <p id="pwdnote" className={pwdFocus && !validPwd ? "instructions" : "offscreen"}>
-                         
-                          8 to 24 characters.<br />
-                          Must include uppercase and lowercase letters, a number and a special character.<br />
-                          Allowed special characters: <span aria-label="exclamation mark">!</span> <span aria-label="at symbol">@</span> <span aria-label="hashtag">#</span> <span aria-label="dollar sign">$</span> <span aria-label="percent">%</span>
-                      </p> */}
-            {/* <label htmlFor="confirm_pwd">
-                          
 
-          </label> */}
-            {/* <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="password2"
-            label="Confirm Password"
-            type="password"
-            id="password2"
-            autoComplete="confirm-password"
-            onChange={(e) => setMatchPwd(e.target.value)}
-            value={matchPwd}
-          
-            aria-describedby="confirmnote"
-            onFocus={() => setMatchFocus(true)}
-            onBlur={() => setMatchFocus(false)}
-          />
-           <p id="confirmnote" className={matchFocus && !validMatch ? "instructions" : "offscreen"}>
-                          Must match the first password input field.
-                      </p> */}
-
-            {/* <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            disabled={!validName || !validPwd || !validMatch ? true : false}
-          >
-            Sign Up
-          </Button> */}
+            
             <Grid container>
               <Grid item xs></Grid>
               <Grid item>

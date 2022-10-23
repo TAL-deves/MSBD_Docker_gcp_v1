@@ -17,17 +17,23 @@ services:
     nodeserver:
         build:
             context: ./Backend
-        networks:
-            - app-network
+        container_name: nodejsserver
+        hostname: nodejsserver
+        # networks:
+        #     - app-network
         ports:
             - "8082:8082"
     frontend:
         build:
             context: ./Frontend
-        networks:
-            - app-network
+        container_name: nginx
+        hostname: nginx
+        # networks:
+        #     - app-network
         ports:
             - "80:80"
-networks:
-    app-network: 
+            - "443:443"
+# networks:
+#     app-network: 
+#         external: true
 

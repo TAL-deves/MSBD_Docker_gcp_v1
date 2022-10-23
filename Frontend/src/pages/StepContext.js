@@ -34,8 +34,9 @@ const REGISTRATION_URL = '/api/signup';
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-const PWD_REGEX = /^[0-9]{6,20}/;
-const PHONE_REGEX = /^[0-9+]{14,20}/;
+// const PWD_REGEX = /^[0-9]{6,20}/;
+const PHONE_REGEX = /^[0-9+]{14,15}/;
+const PWD_REGEX = /^[A-z0-9!@#$%^&*+_-~]{8,23}$/;
 // const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const theme = createTheme();
 //
