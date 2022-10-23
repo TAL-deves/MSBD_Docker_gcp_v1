@@ -648,19 +648,19 @@ app.post("/api/signup", async (req, res, next) => {
       otp: otpGenerated,
     });
 
-    sendMail({
-      to: signUpUser.email,
-      OTP: otpGenerated,
-    });
+    // sendMail({
+    //   to: signUpUser.email,
+    //   OTP: otpGenerated,
+    // });
 
     // console.log(req.body);
     let smssent = JSON.parse(await sendSms({
       reciever: req.body.phoneNumber,
       OTP: otpGenerated
     }))
-    // if(smssent.status_code === 200){
+    if(smssent.status_code === 200){
       signUpUser.save();
-    //   if (signUpUser) {
+      if (signUpUser) {
         let setSendResponseData = new sendResponseData(
           "User registered!",
           202,
@@ -689,19 +689,19 @@ app.post("/api/signup", async (req, res, next) => {
         // })
         // .catch((error) => {
 
-      // } else {
-      //   let setSendResponseData = new sendResponseData(null, 500, "Server error");
-      //   let responseToSend = encryptionOfData(setSendResponseData.error());
+      } else {
+        let setSendResponseData = new sendResponseData(null, 500, "Server error");
+        let responseToSend = encryptionOfData(setSendResponseData.error());
   
-      //   res.send(responseToSend);
-      // }
+        res.send(responseToSend);
+      }
       
-    // } else {
-    //   let setSendResponseData = new sendResponseData(null, smssent.status_code, "OTP service down! Please try again later.");
-    //   let responseToSend = encryptionOfData(setSendResponseData.error());
+    } else {
+      let setSendResponseData = new sendResponseData(null, smssent.status_code, "OTP service down! Please try again later.");
+      let responseToSend = encryptionOfData(setSendResponseData.error());
 
-    //   res.send(responseToSend);
-    // }
+      res.send(responseToSend);
+    }
   }
 });
 
