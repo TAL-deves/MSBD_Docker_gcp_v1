@@ -110,7 +110,7 @@ const LoginForm = (props) => {
 
   if (obj) {
     obj.request.ct = obj.request.ct.replaceAll(" ", "+");
-    // console.log("updated gobject Object is ------ ", obj);
+    console.log("updated gobject Object is ------ ", obj);
 
     if (gobject !== null) {
       const { request, passphase } = obj;
@@ -137,7 +137,7 @@ const LoginForm = (props) => {
         setCurrentuser(gprofilename);
         setGname(setGname);
         localStorageService.setToken(googleData.data.data);
-        // console.log(googleData.reslut);
+        console.log(googleData.reslut);
         window.opener.location.reload();
         window.close();
       }
