@@ -1,4 +1,5 @@
 const express = require("express");
+const os = require("os");
 const app = express();
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
@@ -2204,7 +2205,7 @@ app.post("/api/atestingpoint", async (req, res) => {
 
 let port = process.env.PORT;
 app.listen(port, () => {
-  console.log("server is up and running " + port);
+  console.log("server is up and running " + port + "os: "+ os.hostname());
 });
 
 // module.exports = router

@@ -17,12 +17,12 @@ services:
     nodeserver:
         build:
             context: ./Backend
-        container_name: nodejsserver
-        hostname: nodejsserver
+        # container_name: nodejsserver
+        # hostname: nodejsserver
         # networks:
         #     - app-network
-        ports:
-            - "8082:8082"
+        # ports:
+        #     - "8082:8082"
     frontend:
         build:
             context: ./Frontend
