@@ -95,7 +95,7 @@ app.use(
     origin: true,
     methods: "GET,POST,PUT,DELETE",
     credentials: true,
-    exposedHeaders: ['x-auth-token']
+    // exposedHeaders: ['x-auth-token']
   })
 );
 app.use(
