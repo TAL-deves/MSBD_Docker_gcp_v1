@@ -92,8 +92,8 @@ app.use(express.json());
 app.use(
   cors({
     // origin: '*',
-    // origin: true,
-    origin: ["https://mindschoolbd.com/","https://www.mindschoolbd.com/","mindschoolbd.com"],
+    origin: true,
+    // origin: ["https://mindschoolbd.com/","https://www.mindschoolbd.com/","mindschoolbd.com"],
     methods: "GET,POST,PUT,DELETE",
     credentials: true,
     // exposedHeaders: ['x-auth-token']
