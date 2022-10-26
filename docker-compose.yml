@@ -17,6 +17,7 @@ services:
     nodeserver:
         build:
             context: ./Backend
+        restart: on-failure
         # container_name: nodejsserver
         # hostname: nodejsserver
         # networks:
