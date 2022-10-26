@@ -46,7 +46,10 @@ passport.use(
 					active: true
 				  });
 				  newUser.save();
-				  return callback(null, newUser);
+				  printStatement = () => {
+					return callback(null, newUser);
+				  };
+				  setTimeout(printStatement, 2000);
 				} else {
 				  // if we find an user just return return user
 				  return callback(null, user);

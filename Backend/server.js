@@ -1929,8 +1929,8 @@ function obtainToken(req, res, callback) {
       let setSendResponseData = new sendResponseData(null, 404, err.message);
       let responseToSend = encryptionOfData(setSendResponseData.error());
 
-      // return responseToSend;
-      res.send(responseToSend);
+      return responseToSend;
+      // res.send(responseToSend);
     });
 }
 
